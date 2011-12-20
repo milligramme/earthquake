@@ -1,5 +1,6 @@
 # encoding: UTF-8
 require 'fileutils'
+require "htmlentities"
 
 module Earthquake
   module Core
@@ -224,7 +225,8 @@ module Earthquake
       title = args.delete(:title)
       message = message.is_a?(String) ? message : message.inspect
       # FIXME: Escaping should be done at Notify.notify
-      Notify.notify title, CGI::unescapeHTML(message.e)
+      coder = HTMLEntities.new
+      Notify.notify title, coder.decode(message.e)
     end
     alias_method :n, :notify
 
