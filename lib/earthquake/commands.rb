@@ -220,7 +220,7 @@ Earthquake.init do
 
   # :recent jugyo
   command %r|^:recent\s+@?([^\/\s]+)$|, :as => :recent do |m|
-    puts_items twitter.user_timeline(:screen_name => m[1], :count => config[:recent_count])
+    puts_items twitter.user_timeline(:screen_name => m[1])
   end
 
   # :recent yugui/ruby-committers
