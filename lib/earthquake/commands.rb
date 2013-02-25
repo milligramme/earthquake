@@ -112,6 +112,7 @@ Earthquake.init do
     return text unless config[:eval_as_ruby_string_for_update]
     begin
       text = eval(%|"#{text.gsub('"', '\"')}"|)
+    rescue SyntaxError => e
     rescue Exception => e
       puts e.message.c(:notice)
     end
@@ -238,7 +239,7 @@ Earthquake.init do
     if user.key?("error")
       user = twitter.status(m[1])["user"] || {}
     end
-    ap user.slice(*%w(id screen_name name profile_image_url description url location time_zone lang protected))
+    ap user.slice(*%w(id_str screen_name name profile_image_url description url location time_zone lang protected statuses_count followers_count friends_count listed_count created_at))
   end
 
   help :user, "show user info"
@@ -427,7 +428,9 @@ Earthquake.init do
   help :update_profile_image, "updates profile image from local file path"
 
   command %r|^:open\s+(\d+)$|, :as => :open do |m|
-    matches = URI.extract(twitter.status(m[1])["text"],["http", "https"])
+    matches = twitter.status(m[1])['retweeted_status'].nil? ? 
+      URI.extract(twitter.status(m[1])["text"],["http", "https"]) :
+      URI.extract(twitter.status(m[1])['retweeted_status']["text"],["http", "https"]) 
     unless matches.empty?
       matches.each do |match_url|
         browse match_url
