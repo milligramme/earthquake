@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency "twitter-stream"
   s.add_runtime_dependency "notify"
   s.add_runtime_dependency "i18n"
-  s.add_runtime_dependency "activesupport"
+  s.add_runtime_dependency "activesupport", "~> 3.2.13"
   s.add_runtime_dependency "awesome_print"
   s.add_runtime_dependency "launchy"
   s.add_runtime_dependency "oauth"
